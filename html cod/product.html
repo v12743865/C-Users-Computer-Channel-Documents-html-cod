@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details | LUXANEXA</title>
+  <link rel="stylesheet" href="index.css">
+
+  <style>
+    .detail-page {
+      max-width: 1100px;
+      margin: 45px auto;
+      padding: 20px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 25px;
+      color: #d95e0b;
+      font-weight: bold;
+    }
+
+    .detail-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .detail-image {
+      width: 100%;
+      height: 430px;
+      object-fit: contain;
+      padding: 20px;
+      background: #faf9f7;
+      border: 1px solid #eae7e3;
+      border-radius: 16px;
+    }
+
+    .detail-info h1 {
+      margin: 10px 0;
+      font-size: 34px;
+    }
+
+    .detail-price {
+      margin: 18px 0;
+      color: #d95e0b;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .detail-description {
+      margin: 20px 0;
+      color: #666;
+      line-height: 1.8;
+    }
+
+    .quantity-row {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin: 25px 0;
+    }
+
+    .quantity-row input {
+      width: 75px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+    }
+
+    .detail-add {
+      padding: 14px 24px;
+      background: #171717;
+      color: white;
+      border: 0;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .detail-add:hover {
+      background: #f47721;
+    }
+
+    .related-title {
+      margin: 55px 0 20px;
+      font-size: 27px;
+    }
+
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .related-card {
+      padding: 15px;
+      border: 1px solid #eee;
+      border-radius: 12px;
+    }
+
+    .related-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: contain;
+    }
+
+    .related-card h3 {
+      margin: 12px 0 5px;
+      font-size: 16px;
+    }
+
+    .related-card p {
+      margin-bottom: 12px;
+      color: #d95e0b;
+      font-weight: bold;
+    }
+
+    .related-card a {
+      color: #171717;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 650px) {
+      .detail-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-image {
+        height: 300px;
+      }
+
+      .detail-info h1 {
+        font-size: 28px;
+      }
+
+      .related-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="navbar">
+    <a href="INDEX.html" class="logo">LUXA<span>NEXA</span></a>
+    <a href="INDEX.html#products">Back to Shop</a>
+  </header>
+
+  <main class="detail-page">
+    <a class="back-link" href="INDEX.html#products">
+      ← Back to Products
+    </a>
+
+    <div id="product-detail">
+      Loading product...
+    </div>
+
+    <section>
+      <h2 class="related-title">You May Also Like</h2>
+      <div id="related-products" class="related-grid"></div>
+    </section>
+  </main>
+
+  <script>
+    const products = [
+      {
+        id: 1,
+        name: "Bag",
+        price: 1200,
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSh7aksUmXWZih_HHEFKCnvr2ZqWhKsGFzNQ1nyrGWAZA&s=10",
+        category: "Fashion",
+        description: "A stylish bag for everyday use. A practical choice for carrying your daily essentials."
+      },
+      {
+        id: 2,
+        name: "Smart Watch",
+        price: 4500,
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIWW0OnoN4rOWlEhR8MSmZ_YKSR81p0kdsO2jJOIIyyw&s=10",
+        category: "Electronics",
+        description: "A modern smart watch for your everyday style and convenience."
+      },
+      {
+        id: 3,
+        name: "Stylish Sneakers",
+        price: 3500,
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPJkLonvIUh8aKfMtq73m4qtuPDpqNrIewK_2e5c6cIg&s=10",
+        category: "Fashion",
+        description: "Stylish sneakers for casual outfits and everyday wear."
+      },
+      {
+        id: 4,
+        name: "Wireless Headphones",
+        price: 2500,
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiEEIhqavszcx4KWPf2J5AVLL099ehrfbyk1yJrZepLw&s",
+        category: "Electronics",
+        description: "Wireless headphones designed for enjoying music and everyday listening."
+      },
+      {
+        id: 6,
+        name: "iPhone",
+        price: 180000,
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBpMvHSXJuHQF7Hzpg5cGvryEMJPXfeQ0zFPbEc1F19w&s=10",
+        category: "Electronics",
+        description: "Explore this smartphone listing. Confirm the exact model, storage and condition before purchase."
+      },
+      {
+        id: 7,
+        name: "Laptop",
+        price: 150000,
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6qUKLD_XVRbtm0kM-VjTneRMSWRMU1EN32Zq3_3k6Ng&s=10",
+        category: "Electronics",
+        description: "A laptop listing for work, study and everyday computing. Check the specifications before purchase."
+      },
+      {
+        id: 8,
+        name: "Rubik's Cube",
+        price: 300,
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvZ_vqW6jgWJvPSZe0OJ3Po0MKK5A2J4p6qv23KJRqxg&s=10",
+        category: "Toys",
+        description: "A classic puzzle cube for practising problem-solving and logical thinking."
+      },
+      {
+        id: 9,
+        name: "Gaming PC",
+        price: 250000,
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSovF4HSKEeyi7gBFXW-Om_SXosE344sgtcmTXdGWxXMA&s=10",
+        category: "Electronics",
+        description: "A gaming PC listing. Check the processor, graphics card, RAM and storage specifications."
+      },
+      {
+        id: 10,
+        name: "Smart Pencil",
+        price: 2500,
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmyQPd117iAGzZVy-oTkV0TAocdtQHyfz4_LbmH4M7Jw&s",
+        category: "Accessories",
+        description: "A handy pencil-style accessory. Confirm device compatibility and features before purchase."
+      },
+      {
+        id: 11,
+        name: "Tablet",
+        price: 45000,
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3_x_kFYB2eNecWzRLitzo-X955x6ZBWQw1Nth-cz-CQ&s=10",
+        category: "Electronics",
+        description: "A tablet listing suitable for browsing, reading and everyday tasks. Check its specifications before purchase."
+      },
+      {
+        id: 12,
+        name: "Action Figure Goku",
+        price: 3500,
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiFUkXH6hHhfDBVTl45Q0b0UPXq0PipQKKg4MhOshAAw&s=10",
+        category: "Toys",
+        description: "A Goku action figure for anime fans and collectors."
+      },
+      {
+        id: 13,
+        name: "Samsung S23 Ultra",
+        price: 180000,
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhJBiY0XgQ5EOxnzteotQUgauxPKfjDN4E7uACb7r80A&s=10",
+        category: "Electronics",
+        description: "A Samsung smartphone listing. Confirm storage, condition and included accessories before purchase."
+      }
+    ];
+
+    const params = new URLSearchParams(window.location.search);
+    const productId = Number(params.get("id"));
+    const product = products.find(item => item.id === productId);
+    const detail = document.getElementById("product-detail");
+    const related = document.getElementById("related-products");
+
+    function money(price) {
+      return "Rs. " + price.toLocaleString("en-PK");
+    }
+
+    if (!product) {
+      detail.innerHTML = `
+        <h2>Product not found</h2>
+        <p>Please return to the shop and select a product.</p>
+      `;
+    } else {
+      detail.innerHTML = `
+        <div class="detail-layout">
+          <img class="detail-image"
+               src="${product.image}"
+               alt="${product.name}">
+
+          <div class="detail-info">
+            <p class="tagline">${product.category}</p>
+            <h1>${product.name}</h1>
+            <p class="detail-price">${money(product.price)}</p>
+            <p class="detail-description">${product.description}</p>
+
+            <p><strong>Availability:</strong> Please confirm before ordering.</p>
+
+            <div class="quantity-row">
+              <label for="quantity">Quantity:</label>
+              <input id="quantity" type="number" min="1" max="10" value="1">
+            </div>
+
+            <button class="detail-add" id="detailAdd">
+              Add to Cart
+            </button>
+            <p id="cartMessage" role="status"></p>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("detailAdd").addEventListener("click", () => {
+        const quantityInput = document.getElementById("quantity");
+        const quantity = Number(quantityInput.value);
+
+        if (!Number.isInteger(quantity) || quantity < 1 || quantity > 10) {
+          document.getElementById("cartMessage").textContent =
+            "Please choose a quantity from 1 to 10.";
+          return;
+        }
+
+        let cart = [];
+
+        try {
+          cart = JSON.parse(localStorage.getItem("luxenexaCart") || "[]");
+          if (!Array.isArray(cart)) cart = [];
+        } catch {
+          cart = [];
+        }
+
+        for (let i = 0; i < quantity; i++) {
+          cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: product.image
+          });
+        }
+
+        localStorage.setItem("luxenexaCart", JSON.stringify(cart));
+
+        document.getElementById("cartMessage").textContent =
+          quantity + " × " + product.name + " added to cart!";
+      });
+
+      const relatedProducts = products
+        .filter(item => item.id !== product.id &&
+          item.category === product.category)
+        .slice(0, 3);
+
+      if (relatedProducts.length === 0) {
+        related.innerHTML = "<p>More related products coming soon.</p>";
+      } else {
+        related.innerHTML = relatedProducts.map(item => `
+          <article class="related-card">
+            <a href="product.html?id=${item.id}">
+              <img src="${item.image}" alt="${item.name}">
+            </a>
+            <h3>${item.name}</h3>
+            <p>${money(item.price)}</p>
+            <a href="product.html?id=${item.id}">View Details →</a>
+          </article>
+        `).join("");
+      }
+    }
+  </script>
+</body>
+</html>

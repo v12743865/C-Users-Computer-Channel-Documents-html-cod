@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUXANEXA | Login</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f1eb;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: white;
+      width: min(90%, 380px);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px #00000012;
+    }
+    h1 { text-align: center; letter-spacing: 3px; }
+    p { text-align: center; color: #666; }
+    input, button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 12px;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    input { border: 1px solid #ccc; }
+    button {
+      border: 0;
+      background: #171717;
+      color: white;
+      cursor: pointer;
+    }
+    #message { font-size: 14px; overflow-wrap: anywhere; }
+    a { color: #8a5b35; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>LUXANEXA</h1>
+    <p>Welcome back! Login to your account.</p>
+
+    <form id="loginForm">
+      <input id="email" type="email" placeholder="Email address" required>
+      <input id="password" type="password" placeholder="Password" required minlength="6">
+      <button type="submit" id="loginButton">Login</button>
+    </form>
+
+    <p id="message" role="status"></p>
+    <p>Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
+<p style="text-align:right;">
+  <a href="#" id="forgotPassword">Forgot Password?</a>
+</p>
+    <form id="signupForm" hidden>
+      <h3>Create account</h3>
+      <input id="signupEmail" type="email" placeholder="Email address" required>
+      <input id="signupPassword" type="password" placeholder="Password (6+ characters)" required minlength="6">
+      <button type="submit">Create account</button>
+      <p><a href="#" id="showLogin">Back to Login</a></p>
+    </form>
+  </div>
+
+  <script type="module">
+    import { createClient } from
+      'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+    const SUPABASE_URL = 'https://cnpjzawtkzofkstqrkkc.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_77YDSZ4YVDkhCnB5iJH5CQ_fZjY-t4u';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const message = document.getElementById('message');
+
+document.getElementById('forgotPassword').addEventListener('click', async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById('email').value.trim();
+
+  if (!email) {
+    message.textContent = 'Pehle apni email enter karo.';
+    return;
+  }
+
+  message.textContent = 'Password reset email bheji ja rahi hai...';
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/reset-password.html'
+  });
+
+  if (error) {
+    message.textContent = error.message;
+  } else {
+    message.textContent = 'Email check karo aur password reset link kholo.';
+  }
+});
+
+    document.getElementById('showSignup').onclick = (e) => {
+      e.preventDefault();
+      loginForm.hidden = true;
+      signupForm.hidden = false;
+      message.textContent = '';
+    };
+
+    document.getElementById('showLogin').onclick = (e) => {
+      e.preventDefault();
+      signupForm.hidden = true;
+      loginForm.hidden = false;
+      message.textContent = '';
+    };
+
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      message.textContent = 'Creating account...';
+
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password
+      });
+
+    if (error) {
+  message.textContent = error.message;
+} else if (data.session) {
+  message.textContent = 'Account created! Opening LUXANEXA...';
+  window.location.href = 'INDEX.html';
+} else {
+  message.textContent =
+    'Account created! Please login to continue.';
+}
+    });
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      message.textContent = 'Logging in...';
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        message.textContent = error.message;
+      } else {
+        message.textContent = 'Login successful! Opening LUXANEXA...';
+        window.location.href = 'INDEX.html';
+      }
+    });
+  </script>
+</body>
+</html>
